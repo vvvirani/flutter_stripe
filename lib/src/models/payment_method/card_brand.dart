@@ -19,7 +19,7 @@ enum WalletBrand {
   googlePay('assets/cards/ic_google_pay.svg'),
   applePay('assets/cards/ic_apple_pay.svg'),
   paypal('assets/cards/ic_paypal.svg'),
-  unionPay('assets/cards/ic_affirm.svg'),
+  unionPay('assets/cards/ic_union_pay.svg'),
   unknown('');
 
   final String logo;
