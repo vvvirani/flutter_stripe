@@ -38,15 +38,15 @@ class StripeClient {
         data: data,
         options: Options(method: method.name.toUpperCase()),
       );
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       Response<dynamic>? response = e.response;
       if (response != null) {
         throw StripeException(
-          e.error,
+          e.error.toString(),
           error: StripeError.fromMap(response.data['error']),
         );
       } else {
-        throw StripeException(e.error);
+        throw StripeException(e.error.toString());
       }
     } catch (e) {
       throw StripeException(e.toString());
