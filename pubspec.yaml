@@ -1,5 +1,5 @@
 name: flutter_stripe
-description: A new Flutter package project.
+description: Flutter Package for Stripe payment gateway without Stripe SDK (Using APIs).
 version: 0.0.1
 homepage: https://github.com/vvvirani/flutter_stripe
 
