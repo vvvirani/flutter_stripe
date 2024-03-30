@@ -6,7 +6,7 @@ class StripeError {
   final String? requestLogUrl;
   final String? type;
 
-  StripeError({
+  const StripeError({
     this.code,
     this.docUrl,
     this.message,

@@ -10,7 +10,7 @@ class Customer {
   final String? name;
   final String? phone;
 
-  Customer({
+ const Customer({
     this.id,
     this.address,
     this.created,

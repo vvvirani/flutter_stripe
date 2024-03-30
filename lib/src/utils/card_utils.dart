@@ -1,7 +1,7 @@
 import 'package:flutter_stripe/src/models/payment_method/card_brand.dart';
 
 class CardUtils {
-  CardUtils._();
+  const CardUtils._();
 
   static String? validateCVC(String? value) {
     if (value?.isEmpty ?? true) return _CardValidators.cvcReq;
@@ -19,10 +19,10 @@ class CardUtils {
     late int month;
 
     if (value?.contains(RegExp(r'(\/)')) ?? false) {
-      var split = value?.split(RegExp(r'(\/)'));
+      List<String> split = value?.split(RegExp(r'(\/)')) ?? ['0', ''];
 
-      month = int.parse(split?[0] ?? '0');
-      year = int.parse(split?[1] ?? '0');
+      month = int.parse(split[0]);
+      year = int.parse(split[1]);
     } else {
       month = int.parse(value?.substring(0, (value.length)) ?? '0');
       year = -1;
@@ -30,7 +30,7 @@ class CardUtils {
 
     if ((month < 1) || (month > 12)) return _CardValidators.monthIsInvalid;
 
-    var fourDigitsYear = convertYearTo4Digits(year);
+    int fourDigitsYear = convertYearTo4Digits(year);
     if ((fourDigitsYear < 1) || (fourDigitsYear > 2099)) {
       return _CardValidators.yearIsInvalid;
     }
@@ -41,7 +41,7 @@ class CardUtils {
 
   static int convertYearTo4Digits(int year) {
     if (year < 100 && year >= 0) {
-      var now = DateTime.now();
+      DateTime now = DateTime.now();
       String currentYear = now.year.toString();
       String prefix = currentYear.substring(0, currentYear.length - 2);
       year = int.parse('$prefix${year.toString().padLeft(2, '0')}');
@@ -57,33 +57,33 @@ class CardUtils {
     return !hasYearPassed(year) && !hasMonthPassed(year, month);
   }
 
-  static List<int> getExpiryDate(String? value) {
-    var split = value?.split(RegExp(r'(\/)'));
-    return [int.parse(split?.first ?? '0'), int.parse(split?.last ?? '0')];
+  static List<int> getExpiryDate(String value) {
+    List<String> split = value.split(RegExp(r'(\/)'));
+    return [int.parse(split.first), int.parse(split.last)];
   }
 
   static bool hasMonthPassed(int year, int month) {
-    var now = DateTime.now();
+    DateTime now = DateTime.now();
     return hasYearPassed(year) ||
         convertYearTo4Digits(year) == now.year && (month < now.month + 1);
   }
 
   static bool hasYearPassed(int year) {
     int fourDigitsYear = convertYearTo4Digits(year);
-    var now = DateTime.now();
+    DateTime now = DateTime.now();
     return fourDigitsYear < now.year;
   }
 
-  static String? getCleanedNumber(String? text) {
+  static String getCleanedNumber(String text) {
     RegExp regExp = RegExp(r"[^0-9]");
-    return text?.replaceAll(regExp, '');
+    return text.replaceAll(regExp, '');
   }
 
   static String? getFormatedCardNumber(String? text, {String separator = '-'}) {
-    var buffer = StringBuffer();
+    StringBuffer buffer = StringBuffer();
     for (int i = 0; i < (text?.length ?? 0); i++) {
       buffer.write(text?[i]);
-      var nonZeroIndex = i + 1;
+      int nonZeroIndex = i + 1;
       if (nonZeroIndex % 4 == 0 && nonZeroIndex != text?.length) {
         buffer.write(separator);
       }
@@ -94,16 +94,16 @@ class CardUtils {
   static String? validateCardNum(String? input) {
     if (input?.isEmpty ?? true) return _CardValidators.fieldReq;
 
-    input = getCleanedNumber(input);
+    input = getCleanedNumber(input ?? '');
 
-    if ((input?.length ?? 0) < 8) {
+    if (input.length < 8) {
       return _CardValidators.numberIsInvalid;
     }
 
     int sum = 0;
-    int length = input?.length ?? 0;
-    for (var i = 0; i < length; i++) {
-      int digit = int.parse(input?[length - i - 1] ?? '0');
+    int length = input.length;
+    for (int i = 0; i < length; i++) {
+      int digit = int.parse(input[length - i - 1]);
 
       if (i % 2 == 1) {
         digit *= 2;

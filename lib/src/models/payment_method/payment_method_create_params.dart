@@ -16,7 +16,7 @@ class PaymentMethodCreateParams {
     this.billingDetails,
   }) : type = PaymentMethodType.card;
 
-  PaymentMethodCreateParams({
+  const PaymentMethodCreateParams({
     required this.type,
     required this.number,
     required this.expMonth,

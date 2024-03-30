@@ -27,10 +27,8 @@ class _LoaderDialog extends RawDialogRoute {
       : super(
           barrierColor: Colors.black.withOpacity(0.2),
           pageBuilder: (context, animation, secondaryAnimation) {
-            return WillPopScope(
-              onWillPop: () {
-                return Future.value(false);
-              },
+            return PopScope(
+              canPop: false,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
